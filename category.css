@@ -3,6 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+html {
+  font-size: 16px;
+}
 body {
   background: #f5f5f5;
   font-family: Arial, sans-serif;
@@ -54,6 +57,7 @@ header h1 {
   font-size: 22px;
   margin-bottom: 15px;
 }
+
 .books-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -74,12 +78,12 @@ header h1 {
   border-radius: 4px;
 }
 .book-title {
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: bold;
   margin-top: 8px;
 }
 .book-author {
-  font-size: 12px;
+  font-size: .8rem;
   color: #555;
   margin-top: 4px;
 }
@@ -215,7 +219,7 @@ header h1 {
   }
 
   .book-actions button {
-    font-size: 14px;
+    font-size: 0.8rem;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -333,14 +337,14 @@ header h1 {
 
   .books-grid.featured-layout .book-title {
     grid-area: title;
-    font-size: 20px;
+    font-size: 1rem;
     font-weight: bold;
     margin: 0;
   }
 
   .books-grid.featured-layout .book-author {
     grid-area: author;
-    font-size: 14px;
+    font-size: .8rem;
     color: #555;
     margin: 0;
   }
@@ -348,7 +352,6 @@ header h1 {
   .books-grid.featured-layout .book-description {
     grid-area: desc;
     display: block;
-    font-size: 14px;
     line-height: 1.4;
     margin: 0;
     max-height: 120px;
@@ -403,19 +406,19 @@ header h1 {
 
   .books-grid.mobile-featured.featured-layout .book-title {
     grid-area: title;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
   }
 
   .books-grid.mobile-featured.featured-layout .book-author {
     grid-area: author;
-    font-size: 13px;
+    font-size: 0.8rem;
     color: #666;
   }
 
   .books-grid.mobile-featured.featured-layout .book-description {
     grid-area: desc;
-    font-size: 13px;
+    font-size: 0.8rem;
     line-height: 1.4;
     max-height: 100px;
     overflow-y: auto;
