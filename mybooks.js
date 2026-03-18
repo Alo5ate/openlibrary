@@ -39,7 +39,7 @@ function renderBooks(books, mode) {
   container.innerHTML = books.map(book => {
     const cover = book.covers?.[0]
       ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`
-      : "/images/book-placeholder.png";
+      : "images/book-placeholder.png";
 
     const author = book.authors?.[0]?.name || "Unknown";
 

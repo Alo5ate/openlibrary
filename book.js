@@ -11,7 +11,7 @@ function renderBook(book) {
     : "/images/book-placeholder.png";
 
   document.getElementById("bookDetails").innerHTML = `
-    <img src="${cover}" alt="${book.title}" onerror="this.src='/images/book-placeholder.png'">
+    <img src="${cover}" alt="${book.title}" onerror="this.src='images/book-placeholder.png'">
     <div class="book-title">${book.title}</div>
     <div class="book-author">${book.by_statement || ""}</div>
 
