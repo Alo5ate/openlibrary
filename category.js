@@ -69,7 +69,7 @@ function renderBooks(books) {
 
     return `
       <div class="book-card" data-workkey="${book.key}">
-        <img src="${cover}" alt="${book.title}" onclick="openBook('${book.key}')">
+        <img src="${cover}" alt="${book.title}" onclick="openBook('${book.key}')" onerror="this.src='/images/book-placeholder.png'">
         <div class="book-title">${book.title}</div>
         <div class="book-author">${author}</div>
           <div class="book-description">Loading description…</div>
