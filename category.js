@@ -29,7 +29,7 @@ function renderBooks(books) {
   grid.innerHTML = books.map(book => {
     const cover = book.cover_id
       ? `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`
-      : "images/book-placeholder.png";
+      : "/images/book-placeholder.png";
 
     const author = book.authors?.[0]?.name || "Unknown";
 
@@ -125,7 +125,6 @@ function lazyLoadDescriptions() {
       const workKey = card.dataset.workkey;
       const descEl = card.querySelector(".book-description");
 
-      // Avoid double-fetching
       if (card.dataset.loaded === "true") {
         obs.unobserve(card);
         continue;

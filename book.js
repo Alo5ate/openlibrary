@@ -8,7 +8,7 @@ fetch(`https://openlibrary.org${id}.json`)
 function renderBook(book) {
   const cover = book.covers
     ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
-    : "images/no-cover.png";
+    : "/images/book-placeholder.png";
 
   document.getElementById("bookDetails").innerHTML = `
     <img src="${cover}" alt="${book.title}">

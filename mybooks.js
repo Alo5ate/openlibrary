@@ -39,7 +39,7 @@ function renderBooks(books, mode) {
   container.innerHTML = books.map(book => {
     const cover = book.covers?.[0]
       ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`
-      : "images/no-cover.png";
+      : "/images/book-placeholder.png";
 
     const author = book.authors?.[0]?.name || "Unknown";
 
@@ -134,7 +134,6 @@ function lazyLoadDescriptions() {
       const workKey = card.dataset.workkey;
       const descEl = card.querySelector(".book-description");
 
-      // Avoid double-fetching
       if (card.dataset.loaded === "true") {
         obs.unobserve(card);
         continue;
@@ -175,23 +174,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!slider || !grid) return;
 
-  // Load saved value
+
   const saved = sessionStorage.getItem("gridColumns") || "5";
 
   slider.value = saved;
   valueDisplay.textContent = saved;
 
-  // Apply saved grid column count
+
   document.documentElement.style.setProperty("--grid-columns", saved);
 
-  // Restore featured layout if needed
   if (saved === "2" || saved === "1") {
     grid.classList.add("featured-layout");
   } else {
     grid.classList.remove("featured-layout");
   }
 
-  // Listen for slider changes
   slider.addEventListener("input", () => {
     const val = slider.value;
     valueDisplay.textContent = val;

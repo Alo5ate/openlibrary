@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!query) return;
 
-  // Keep search term in the search bar
+
   document.getElementById("searchInput").value = query;
 
-  // Show title
+
   document.getElementById("searchTitle").textContent = `Results for "${query}"`;
 
-  // Fetch results
+
   fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`)
     .then(res => res.json())
     .then(data => renderBooks(data.docs));
@@ -117,7 +117,6 @@ function lazyLoadDescriptions() {
       const workKey = card.dataset.workkey;
       const descEl = card.querySelector(".book-description");
 
-      // Avoid double-fetching
       if (card.dataset.loaded === "true") {
         obs.unobserve(card);
         continue;
@@ -195,7 +194,7 @@ function getCover(book) {
     return `https://covers.openlibrary.org/b/olid/${book.edition_key[0]}-M.jpg`;
   }
 
-  return "images/book-placeholder.png";
+  return "/images/book-placeholder.png";
 }
 
 function openBook(key) {
