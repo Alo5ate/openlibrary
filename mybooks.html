@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My books</title>
+  <link rel="stylesheet" href="mybooks.css">
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="desktop-logo">
+        <img src="icons/home.svg" alt="Home">
+    </a>
+    <button class="back-btn" onclick="history.back()">
+        <img src="icons/arrow-left-stroke.svg" alt="Back">
+    </button>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search books..." onkeypress="handleSearch(event)">
+        <button id="searchBtn" onclick="startSearch()">
+        <img src="icons/search.svg" alt="Search">
+    </button>
+    </div>
+        <div class="header-actions">
+          <button onclick="openPlanList()">Plan</button>
+          <button onclick="openReadingList()">Reading</button>
+          <button onclick="openFinishedList()">Finished</button>
+        </div>
+</header>
+
+<div class="page-wrapper">
+
+  <h2 id="listTitle"></h2>
+
+  <div id="booksList" class="books-grid"></div>
+
+</div>
+
+
+
+<div id="settingsFooter" class="settings-footer">
+  <button id="decreaseFontBtn" onclick="decreaseFont()">A-</button>
+  <button id="increaseFontBtn" onclick="increaseFont()">A+</button>
+  <div class="grid-slider-container">
+    <label for="gridSlider">Grid Columns:</label>
+    <input type="range" id="gridSlider" min="1" max="5" value="5">
+    <span id="gridValue">5</span>
+  </div>
+  <button>Option 3</button>
+</div>
+
+<footer class="mobile-footer">
+  <button onclick="goHome()">
+    <img src="icons/home.svg" alt="">
+    <span>Home</span>
+  </button>
+
+  <button onclick="openReadingList()">
+    <img src="icons/book-open.svg" alt="">
+    <span>Reading</span>
+  </button>
+
+  <button onclick="openPlanList()">
+    <img src="icons/book-library.svg" alt="">
+    <span>Plan</span>
+  </button>
+
+  <button onclick="openFinishedList()">
+    <img src="icons/flag-chequered.svg" alt="">
+    <span>Finished</span>
+  </button>
+
+  <button onclick="toggleTools()">
+    <img src="icons/cog.svg" alt="setting">
+    <span>Tools</span>
+  </button>
+
+</footer>
+
+<script src="mybooks.js"></script>
+</body>
+</html>
