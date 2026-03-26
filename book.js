@@ -1,17 +1,28 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+let planToRead = JSON.parse(sessionStorage.getItem("planToRead")) || [];
+let reading = JSON.parse(sessionStorage.getItem("reading")) || [];
+let finished = JSON.parse(sessionStorage.getItem("finishedBooks")) || [];
+
+
+console.log("BOOK ID:", id);
 fetch(`https://openlibrary.org${id}.json`)
   .then(res => res.json())
   .then(data => renderBook(data));
+  function renderBook(book) {
+  const bookId = normalizeId(book.key || id);
+    
+  const inPlan = planToRead.includes(bookId);
+  const inReading = reading.includes(bookId);
+  const inFinished = finished.includes(bookId);
 
-function renderBook(book) {
   const cover = book.covers
     ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
     : "/images/book-placeholder.png";
 
   document.getElementById("bookDetails").innerHTML = `
-    <img src="${cover}" alt="${book.title}" onerror="this.onerror=null; this.src='images/book-placeholder.png'">
+    <img src="${cover}" alt="${book.title}">
     <div class="book-title">${book.title}</div>
     <div class="book-author">${book.by_statement || ""}</div>
 
@@ -20,83 +31,88 @@ function renderBook(book) {
     </div>
 
     <div class="actions">
-      <button>Plan to Read</button>
-      <button>Reading</button>
+      <button id="planBtn" class="${inPlan ? "disabled-btn active-btn" : ""}" 
+              ${inPlan ? "disabled" : ""}>
+        Plan to Read
+      </button>
+
+      <button id="readingBtn" class="${inReading ? "disabled-btn active-btn" : ""}" 
+              ${inReading ? "disabled" : ""}>
+        Reading
+      </button>
+
+      <button id="finishedBtn" class="${inFinished ? "disabled-btn active-btn" : ""}" 
+              ${inFinished ? "disabled" : ""}>
+        Finished
+      </button>
     </div>
   `;
+
+  attachBookButtonHandlers(bookId);
 }
 
+function attachBookButtonHandlers(bookId) {
+  const planBtn = document.getElementById("planBtn");
+  const readingBtn = document.getElementById("readingBtn");
+  const finishedBtn = document.getElementById("finishedBtn");
 
+  planBtn.addEventListener("click", () => {
+      removeFromAllLists(bookId);
 
-function goHome() {
-  window.location.href = "index.html";
+      planToRead.push(bookId);
+      sessionStorage.setItem("planToRead", JSON.stringify(planToRead));
+
+      disableButtons("plan");
+  });
+
+  readingBtn.addEventListener("click", () => {
+      removeFromAllLists(bookId);
+
+      reading.push(bookId);
+      sessionStorage.setItem("reading", JSON.stringify(reading));
+
+      disableButtons("reading");
+  });
+
+  finishedBtn.addEventListener("click", () => {
+      removeFromAllLists(bookId);
+
+      finished.push(bookId);
+      sessionStorage.setItem("finishedBooks", JSON.stringify(finished));
+
+      disableButtons("finished");
+  });
 }
 
-function openReadingList() {
-  window.location.href = "mybooks.html?mode=reading";
+function normalizeId(id) {
+  if (id.startsWith("/works/")) return id;
+  return `/works/${id.replace(/[^0-9A-Za-z]/g, "")}`;
 }
 
-function openPlanList() {
-  window.location.href = "mybooks.html?mode=plan";
-}
-function openFinishedList() {
-  window.location.href = "mybooks.html?mode=finished";
-}
-function toggleTools() {
-  const extra = document.getElementById("settingsFooter");
-  extra.classList.toggle("show");
-}
+function disableButtons(active) {
+  const planBtn = document.getElementById("planBtn");
+  const readingBtn = document.getElementById("readingBtn");
+  const finishedBtn = document.getElementById("finishedBtn");
 
-function handleSearch(e) {
-  if (e.key === "Enter") {
-    startSearch();
-  }
-}
+  planBtn.disabled = active === "plan";
+  readingBtn.disabled = active === "reading";
+  finishedBtn.disabled = active === "finished";
 
-function startSearch() {
-  const term = document.getElementById("searchInput").value.trim();
-  if (term.length === 0) return;
+  planBtn.classList.toggle("active-btn", active === "plan");
+  readingBtn.classList.toggle("active-btn", active === "reading");
+  finishedBtn.classList.toggle("active-btn", active === "finished");
 
-  window.location.href = `search.html?query=${encodeURIComponent(term)}`;
+  planBtn.classList.toggle("disabled-btn", active === "plan");
+  readingBtn.classList.toggle("disabled-btn", active === "reading");
+  finishedBtn.classList.toggle("disabled-btn", active === "finished");
 }
 
+function removeFromAllLists(bookId) {
+    planToRead = planToRead.filter(id => id !== bookId);
+    reading = reading.filter(id => id !== bookId);
+    finished = finished.filter(id => id !== bookId);
 
-/**/
-let fontLevel = parseInt(sessionStorage.getItem("fontLevel")) || 1;
-
-applyFontSize();
-updateFontButtons();
-function increaseFont() {
-  if (fontLevel < 2) {
-    fontLevel++;
-    sessionStorage.setItem("fontLevel", fontLevel);
-    applyFontSize();
-    updateFontButtons();
-  }
-}
-
-function decreaseFont() {
-  if (fontLevel > 0) {
-    fontLevel--;
-    sessionStorage.setItem("fontLevel", fontLevel);
-    applyFontSize();
-    updateFontButtons();
-  }
-}
-
-function applyFontSize() {
-  const root = document.documentElement;
-
-  if (fontLevel === 0) {
-    root.style.fontSize = "14px";
-  } else if (fontLevel === 1) {
-    root.style.fontSize = "16px";
-  } else if (fontLevel === 2) {
-    root.style.fontSize = "20px";
-  }
-}
-
-function updateFontButtons() {
-  document.getElementById("increaseFontBtn").disabled = fontLevel === 2;
-  document.getElementById("decreaseFontBtn").disabled = fontLevel === 0;
+    sessionStorage.setItem("planToRead", JSON.stringify(planToRead));
+    sessionStorage.setItem("reading", JSON.stringify(reading));
+    sessionStorage.setItem("finishedBooks", JSON.stringify(finished));
 }

@@ -5,6 +5,7 @@ document.querySelectorAll('.category').forEach(cat => {
   });
 });
 
+
 document.getElementById('searchBtn').addEventListener('click', () => {
   const query = document.getElementById('searchInput').value;
   fetch(`https://openlibrary.org/search.json?q=${query}`)
@@ -22,84 +23,54 @@ function displayResults(books) {
   `).join('');
 }
 
-function goHome() {
-  window.location.href = "index.html";
+function loadReadingList() {
+    const readingList = JSON.parse(sessionStorage.getItem("reading")) || [];
+
+    const section = document.getElementById("readingListSection");
+    const container = document.getElementById("readingListBooks");
+
+    const booksToShow = readingList.slice(0, 5);
+
+    Promise.all(
+        booksToShow.map(key =>
+            fetch(`https://openlibrary.org${key}.json`).then(res => res.json())
+        )
+    ).then(books => {
+        container.innerHTML = books.map(book => {
+            const cover = book.covers?.[0]
+                ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`
+                : "images/book-placeholder.png";
+
+            const title = book.title || "Untitled";
+
+            const author = book.authors?.[0]?.name || "Unknown";
+
+            return `
+              <div class="reading-list-item" onclick="openBook('${book.key}')">
+                  <img src="${cover}">
+                  <div class="book-info">
+                      <div class="book-title">${title}</div>
+                      <div class="book-author">${author}</div>
+                  </div>
+              </div>
+            `;
+        }).join("");
+    });
 }
 
-function openReadingList() {
-  window.location.href = "mybooks.html?mode=reading";
-}
+document.addEventListener("DOMContentLoaded", loadReadingList);
 
-function openPlanList() {
-  window.location.href = "mybooks.html?mode=plan";
-}
-function toggleTools() {
-  const extra = document.getElementById("settingsFooter");
-  extra.classList.toggle("show");
-}
-function openFinishedList() {
-  window.location.href = "mybooks.html?mode=finished";
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const listContainer = document.getElementById("readingListBooks");
+    const emptyMessage = document.getElementById("readingListEmpty");
 
+    const readingList = JSON.parse(sessionStorage.getItem("reading")) || [];
 
-function toggleSettings() {
-  const panel = document.getElementById("settingsFooter");
-  panel.classList.toggle("show");
-  updateFontButtons();
-}
-
-
-function handleSearch(e) {
-  if (e.key === "Enter") {
-    startSearch();
-  }
-}
-
-function startSearch() {
-  const term = document.getElementById("searchInput").value.trim();
-  if (term.length === 0) return;
-
-  window.location.href = `search.html?query=${encodeURIComponent(term)}`;
-}
-/**/
-let fontLevel = parseInt(sessionStorage.getItem("fontLevel")) || 1;
-
-applyFontSize();
-updateFontButtons();
-function increaseFont() {
-  if (fontLevel < 2) {
-    fontLevel++;
-    sessionStorage.setItem("fontLevel", fontLevel);
-    applyFontSize();
-    updateFontButtons();
-  }
-}
-
-function decreaseFont() {
-  if (fontLevel > 0) {
-    fontLevel--;
-    sessionStorage.setItem("fontLevel", fontLevel);
-    applyFontSize();
-    updateFontButtons();
-  }
-}
-
-function applyFontSize() {
-  const root = document.documentElement;
-
-  if (fontLevel === 0) {
-    root.style.fontSize = "14px";
-  } else if (fontLevel === 1) {
-    root.style.fontSize = "16px";
-  } else if (fontLevel === 2) {
-    root.style.fontSize = "20px";
-  }
-}
-
-function updateFontButtons() {
-  document.getElementById("increaseFontBtn").disabled = fontLevel === 2;
-  document.getElementById("decreaseFontBtn").disabled = fontLevel === 0;
-}
-
-
-
+    if (readingList.length === 0) {
+        listContainer.style.display = "none";
+        emptyMessage.style.display = "block";
+    } else {
+        listContainer.style.display = "grid"; // or flex, whatever you use
+        emptyMessage.style.display = "none";
+    }
+});

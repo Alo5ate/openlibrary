@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Details</title>
   <link rel="stylesheet" href="search.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="header">
     <a href="index.html" class="desktop-logo">
         <img src="icons/home.svg" alt="Home">
+        <img src="images/icon0.png" class="home-btn-icon">
     </a>
     <button class="back-btn" onclick="history.back()">
         <img src="icons/arrow-left-stroke.svg" alt="Back">
@@ -21,11 +23,18 @@
         <button id="searchBtn" onclick="startSearch()">
       <img src="icons/search.svg" alt="Search">
     </button>
+      <img src="icons/spacebar.svg" class="search-icon">
   </div>
-          <div class="header-actions">
-          <button onclick="openPlanList()">Plan</button>
-          <button onclick="openReadingList()">Reading</button>
-          <button onclick="openFinishedList()">Finished</button>
+        <div class="header-actions">
+          <button onclick="openPlanList()">Plan
+          <img src="images/icon1.png" class="btn-icons">
+          </button>
+          <button onclick="openReadingList()">Reading
+            <img src="images/icon2.png" class="btn-icons">
+          </button>
+          <button onclick="openFinishedList()">Finished
+            <img src="images/icon3.png" class="btn-icons">
+          </button>
         </div>
 </header>
 
@@ -82,5 +91,6 @@
 </footer>
 
 <script src="search.js"></script>
+<script src="feature.js"></script>
 </body>
 </html>

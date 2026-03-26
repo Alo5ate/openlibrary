@@ -70,7 +70,7 @@ function renderBooks(books, mode) {
     // mode === "finished" → NO BUTTONS
 
     return `
-      <div class="book-card" data-workkey="${book.key}">
+      <div class="book-card nav-item" data-workkey="${book.key}" onclick="openBook('${book.key}', '${mode}')">
         <img src="${cover}" alt="${book.title}">
         <div class="book-title">${book.title}</div>
         <div class="book-author">${author}</div>
@@ -80,6 +80,17 @@ function renderBooks(books, mode) {
     `;
   }).join("");
   lazyLoadDescriptions();
+if (iconsVisible) {
+    enableNavigation = true;
+
+    requestAnimationFrame(() => {
+        const items = document.querySelectorAll(".nav-item");
+        if (items.length > 0) {
+            selectedIndex = 0;
+            updateSelection();
+        }
+    });
+  }
 }
 
 
@@ -206,85 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-/**/
-function goHome() {
-  window.location.href = "index.html";
-}
-
-function openReadingList() {
-  window.location.href = "mybooks.html?mode=reading";
-}
-
-function openPlanList() {
-  window.location.href = "mybooks.html?mode=plan";
-}
-function openFinishedList() {
-  window.location.href = "mybooks.html?mode=finished";
-}
-function toggleTools() {
-  const extra = document.getElementById("settingsFooter");
-  extra.classList.toggle("show");
-}
-
-
-/**/
-function handleSearch(e) {
-  if (e.key === "Enter") {
-    startSearch();
-  }
-}
-
-function startSearch() {
-  const term = document.getElementById("searchInput").value.trim();
-  if (term.length === 0) return;
-
-  window.location.href = `search.html?query=${encodeURIComponent(term)}`;
-}
-
-
 
 function normalizeId(id) {
   if (id.startsWith("/works/")) return id;
   return `/works/${id.replace(/[^0-9A-Za-z]/g, "")}`;
-}
-
-
-/**/
-let fontLevel = parseInt(sessionStorage.getItem("fontLevel")) || 1;
-
-applyFontSize();
-updateFontButtons();
-function increaseFont() {
-  if (fontLevel < 2) {
-    fontLevel++;
-    sessionStorage.setItem("fontLevel", fontLevel);
-    applyFontSize();
-    updateFontButtons();
-  }
-}
-
-function decreaseFont() {
-  if (fontLevel > 0) {
-    fontLevel--;
-    sessionStorage.setItem("fontLevel", fontLevel);
-    applyFontSize();
-    updateFontButtons();
-  }
-}
-
-function applyFontSize() {
-  const root = document.documentElement;
-
-  if (fontLevel === 0) {
-    root.style.fontSize = "14px";
-  } else if (fontLevel === 1) {
-    root.style.fontSize = "16px";
-  } else if (fontLevel === 2) {
-    root.style.fontSize = "20px";
-  }
-}
-
-function updateFontButtons() {
-  document.getElementById("increaseFontBtn").disabled = fontLevel === 2;
-  document.getElementById("decreaseFontBtn").disabled = fontLevel === 0;
 }
