@@ -1,7 +1,7 @@
-html {
-  font-size: 16px;
+:root {
+  --primary-color: #f5f5f5;
+  --secondary-color: #fff;
 }
-
 .back-btn {
   background: none;
   border: none;
@@ -16,7 +16,7 @@ html {
 
 
 .book-details {
-  background: #fff;
+  background: var(--secondary-color);
   padding: 15px;
   border-radius: 6px;
   border: 1px solid #ddd;
@@ -66,17 +66,277 @@ html {
   font-size: 14px;
 }
 
+.detail-btn .btn-text {
+    display: none;
+}
+
+.detail-btn .btn-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+body.dyslexia-mode .detail-btn .btn-text {
+  display: none !important;
+}
+
+body.dyslexia-mode .btn-icon {
+  display: inline-block !important;
+  width: 26px;
+  height: 26px;
+}
+body.dyslexia-mode .book-details{
+  background-color: lightgrey !important;
+}
+
+
+.finish-popup {
+  all: initial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+  z-index: 9999;
+}
+.finish-profile{
+  display: none;
+}
+.finish-popup.hidden {
+  display: none;
+}
+.finish-popup-content {
+  background: white;
+  width: 450px;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow: hidden;
+}
+.finish-rating {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.finish-rating textarea {
+  height: 120px;
+  resize: none;
+  font-size: 1rem;
+}
+.finish-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.finish-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+.finish-btn.cancel {
+  background: #ccc;
+}
+.finish-btn.confirm {
+  background: #4CAF50;
+  color: white;
+}
+#finishRating {
+  font-size: 1rem;
+  padding: 8px 10px;
+  height: 45px;
+  border-radius: 6px;
+}
 
 @media (min-width: 900px) {
-  .page-wrapper {
-  max-height: 100vh;
+.page-wrapper {
+  width: 60%;
   overflow-y: auto;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
+  margin: 20px auto;
   }
+
+.finish-profile{
+  display: block;
+}
+
+  #finishCover {
+    width: 180px;
+  }
+  .finish-popup-content {
+    width: 600px;
+    height: auto;
+    max-height: 90vh;
+  }
+
+
+
   .back-btn {
     display: none;
   }
   .book-details {
     margin-bottom: 180px;
   }
+  body:not(.dyslexia-mode) .detail-btn .btn-icon {
+    display: none;
+  }
+
+  body:not(.dyslexia-modes) .detail-btn .btn-text {
+    display: inline;
+  }
+
+  .detail-btn:not(.disabled-btn):hover {
+    cursor: pointer;
+    background-color: #555;
+  }
+
+  .detail-btn:disabled{
+    background-color: #ddd;
+  }
+  /**/
+  .book-details {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas:
+      "img title"
+      "img author"
+      "img desc"
+      "img actions";
+    gap: 20px 30px;
+    align-items: start;
+  }
+
+  .book-details img {
+    grid-area: img;
+    width: 100%;
+    max-width: 300px;
+    margin: 0;
+  }
+
+  .book-title {
+    grid-area: title;
+    text-align: left;
+    margin-top: 0;
+    font-size: 2.3rem;
+  }
+
+  .book-author {
+    grid-area: author;
+    text-align: left;
+    margin-top: 4px;
+  }
+
+  .book-description {
+    grid-area: desc;
+  }
+
+  .actions {
+    grid-area: actions;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .actions button {
+    flex: 0 0 auto;
+  }
+  .actions button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 14px 12px;
+  height: 56px;
+  border: none;
+  border-radius: 6px;
+  background: #eee;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+}
+.review-divider {
+  grid-area: review;
+  width: 100%;
+}
+.finished-review-box {
+  grid-column: 1 / -1;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.finished-review-box label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: block;
+  margin-top: 10px;
+}
+
+.finished-review-box select,
+.finished-review-box textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.save-review-btn {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.save-review-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.read-review-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.review-textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+.read-review-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.read-review-btn:hover {
+  opacity: 1;
+}
 }

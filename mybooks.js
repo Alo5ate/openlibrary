@@ -46,28 +46,29 @@ function renderBooks(books, mode) {
     let buttons = "";
 
     if (mode === "reading") {
-      buttons = `
-        <button class="finished-btn" onclick="markFinished('${book.key}')">
-            <img class="btn-icon" src="icons/flag-chequered.svg" alt="">
-            <span class="btn-text">Finished</span>
-        </button>
-      `;
+        buttons = `
+          <button class="finished-btn" onclick="event.stopPropagation(); openFinishPopup('${book.key}', '${cover}')">
+              <img class="btn-icon" src="icons/flag-chequered.svg" alt="">
+              <span class="btn-text">Finished</span>
+          </button>
+        `;
     }
 
     if (mode === "plan") {
-      buttons = `
-        <button class="reading-btn" onclick="moveToReading('${book.key}')">
-                <img class="btn-icon" src="icons/book-open.svg" alt="">
-            <span class="btn-text">Reading</span>
-        </button>
-        <button class="finished-btn" onclick="markFinished('${book.key}')">
-            <img class="btn-icon" src="icons/flag-chequered.svg" alt="">
-            <span class="btn-text">Finished</span>
-        </button>
-      `;
+        buttons = `
+          <button class="reading-btn" onclick="event.stopPropagation(); moveToReading('${book.key}')">
+              <img class="btn-icon" src="icons/book-open.svg" alt="">
+              <span class="btn-text">Reading</span>
+          </button>
+
+          <button class="finished-btn" onclick="event.stopPropagation(); openFinishPopup('${book.key}', '${cover}')">
+              <img class="btn-icon" src="icons/flag-chequered.svg" alt="">
+              <span class="btn-text">Finished</span>
+          </button>
+        `;
     }
 
-    // mode === "finished" → NO BUTTONS
+// mode finish not btn
 
     return `
       <div class="book-card nav-item" data-workkey="${book.key}" onclick="openBook('${book.key}', '${mode}')">
@@ -91,8 +92,10 @@ if (iconsVisible) {
         }
     });
   }
+  if (sessionStorage.getItem("dyslexiaActive") === "true") {
+    document.body.classList.add("dyslexia-mode");
+  }
 }
-
 
 function moveToReading(bookId) {
   bookId = normalizeId(bookId);
@@ -129,9 +132,6 @@ function markFinished(bookId) {
 function openBook(id, mode) {
   window.location.href = `book.html?id=${id}&mode=${mode}`;
 }
-
-
-
 
 
 function lazyLoadDescriptions() {
@@ -216,6 +216,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+
+let currentFinishBookId = null;
+function openFinishPopup(bookId, coverUrl) {
+  currentFinishBookId = bookId;
+
+  document.getElementById("finishCover").src = coverUrl;
+  document.getElementById("finishPopup").classList.remove("hidden");
+}
+document.getElementById("finishCancel").addEventListener("click", () => {
+  document.getElementById("finishPopup").classList.add("hidden");
+});
+document.getElementById("finishConfirm").addEventListener("click", () => {
+  const rating = document.getElementById("finishRating").value;
+  const review = document.getElementById("finishReview").value;
+
+  if (!rating) {
+    alert("Please select a rating.");
+    return;
+  }
+
+  const bookId = normalizeId(currentFinishBookId);
+
+  const reviewData = {
+    rating,
+    review,
+    date: new Date().toISOString()
+  };
+  sessionStorage.setItem(`review_${bookId}`, JSON.stringify(reviewData));
+
+  markFinished(bookId);
+  document.getElementById("finishPopup").classList.add("hidden");
+});
 
 
 function normalizeId(id) {

@@ -68,7 +68,7 @@ function renderBooks(books) {
     }
 
     return `
-      <div class="book-card nav-item" data-workkey="${book.key}"
+      <div class="book-card nav-item speak" data-say="${book.title}" data-workkey="${book.key}"
       onclick="if (!event.target.closest('.nav-action')) openBook('${book.key}')">
       
         <img src="${cover}" alt="${book.title}" onclick="openBook('${book.key}')" onerror="this.onerror=null; this.src='images/book-placeholder.png'">
@@ -79,6 +79,7 @@ function renderBooks(books) {
       </div>
     `;
   }).join("");
+  attachSpeakEvents();
   lazyLoadDescriptions();
 if (iconsVisible) {
     enableNavigation = true;
@@ -90,6 +91,9 @@ if (iconsVisible) {
             updateSelection();
         }
     });
+  }
+  if (sessionStorage.getItem("dyslexiaActive") === "true") {
+    document.body.classList.add("dyslexia-mode");
   }
 }
 
