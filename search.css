@@ -207,18 +207,25 @@ body .dyslexia-mode .book-actions button img {
     margin: 0;
   }
 
-  .books-grid.featured-layout .book-description {
-    grid-area: desc;
-    display: block;
-    max-height: 120px;
-    overflow-y: auto;
-  }
+.books-grid.featured-layout .book-description {
+  grid-area: desc;
+  /*display: block;*/
+  max-height: 120px;
+  overflow-y: auto;
+}
 
-  .books-grid.featured-layout .book-actions {
-    grid-area: actions;
-    display: flex;
-    gap: 8px;
-  }
+.books-grid.featured-layout .book-actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column; 
+  gap: 8px;
+}
+.books-grid.featured-layout .book-actions button {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+  border-radius: 6px;
+}
 }
 
 @media (max-width: 899px) {

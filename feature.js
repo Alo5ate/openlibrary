@@ -101,26 +101,56 @@ function updateFontSlider() {
 
 
 
+
+
+
+
+const dyslexiaBtn = document.getElementById("dyslexiaToggleBtn");
 const dyslexiaToggle = document.getElementById("dyslexiaToggle");
 let dyslexiaMode = sessionStorage.getItem("dyslexiaActive") === "true";
-if (dyslexiaMode) applyDyslexiaMode();
-dyslexiaToggle.checked = dyslexiaMode;
+
+if (dyslexiaMode) {
+  applyDyslexiaMode();
+  document.body.classList.add("dyslexia-mode");
+  if (dyslexiaToggle) dyslexiaToggle.checked = true;
+  if (dyslexiaBtn) dyslexiaBtn.classList.add("active");
+}
 
 
-dyslexiaToggle.addEventListener("change", function () {
-  dyslexiaMode = this.checked;
-  sessionStorage.setItem("dyslexiaActive", dyslexiaMode);
+if (dyslexiaToggle) {
+  dyslexiaToggle.addEventListener("change", () => {
+    dyslexiaMode = dyslexiaToggle.checked;
+    sessionStorage.setItem("dyslexiaActive", dyslexiaMode);
 
-  if (dyslexiaMode) {
-    applyDyslexiaMode();
-    dyslexiaMode = this.checked;
-    document.body.classList.add("dyslexia-mode");
-  } else {
-    removeDyslexiaMode();
-    document.body.classList.remove("dyslexia-mode");
-  }
-});
+    if (dyslexiaMode) {
+      applyDyslexiaMode();
+      document.body.classList.add("dyslexia-mode");
+      if (dyslexiaBtn) dyslexiaBtn.classList.add("active");
+    } else {
+      removeDyslexiaMode();
+      document.body.classList.remove("dyslexia-mode");
+      if (dyslexiaBtn) dyslexiaBtn.classList.remove("active");
+    }
+  });
+}
+if (dyslexiaBtn) {
+  dyslexiaBtn.addEventListener("click", () => {
+    dyslexiaMode = !dyslexiaMode;
+    sessionStorage.setItem("dyslexiaActive", dyslexiaMode);
 
+    if (dyslexiaMode) {
+      applyDyslexiaMode();
+      document.body.classList.add("dyslexia-mode");
+      dyslexiaBtn.classList.add("active");
+      if (dyslexiaToggle) dyslexiaToggle.checked = true;
+    } else {
+      removeDyslexiaMode();
+      document.body.classList.remove("dyslexia-mode");
+      dyslexiaBtn.classList.remove("active");
+      if (dyslexiaToggle) dyslexiaToggle.checked = false;
+    }
+  });
+}
 function applyDyslexiaMode() {
   document.body.style.background = "#fdf6e3";
   document.body.style.lineHeight = "1.8";
@@ -141,6 +171,33 @@ function removeDyslexiaMode() {
   updateFontButtons();
   updateFontSlider();
 }
+
+
+
+/*
+let darkMode = sessionStorage.getItem("darkModeActive") === "true";
+const darkBtn = document.getElementById("darkModeToggleBtn");
+
+if (darkMode) {
+  document.body.classList.add("dark-mode");
+  darkBtn.classList.add("active");
+}
+darkBtn.addEventListener("click", () => {
+  darkMode = !darkMode;
+  sessionStorage.setItem("darkModeActive", darkMode);
+
+  if (darkMode) {
+    document.body.classList.add("dark-mode");
+    darkBtn.classList.add("active");
+  } else {
+    document.body.classList.remove("dark-mode");
+    darkBtn.classList.remove("active");
+  }
+});
+*/
+
+
+
 
 
 document.querySelectorAll(".swatch").forEach(swatch => {
@@ -222,20 +279,47 @@ if (wordSpacingSlider) {
   }
 }
 
+
+
 const letterSpacingSlider = document.getElementById("letterSpacingSlider");
+const letterSpacingBtn = document.getElementById("letterSpacingBtn");
+let savedLetterSpacing = sessionStorage.getItem("letterSpacing");
+if (savedLetterSpacing) {
+  document.body.style.letterSpacing = savedLetterSpacing;
+  letterSpacingSlider.value = parseInt(savedLetterSpacing);
+
+  if (parseInt(savedLetterSpacing) > 0) {
+    letterSpacingBtn.classList.add("active");
+  }
+}
 if (letterSpacingSlider) {
   letterSpacingSlider.addEventListener("input", () => {
     const spacing = letterSpacingSlider.value + "px";
     document.body.style.letterSpacing = spacing;
     sessionStorage.setItem("letterSpacing", spacing);
-  });
 
-  const savedLetterSpacing = sessionStorage.getItem("letterSpacing");
-  if (savedLetterSpacing) {
-    document.body.style.letterSpacing = savedLetterSpacing;
-    letterSpacingSlider.value = parseInt(savedLetterSpacing);
-  }
+    if (letterSpacingSlider.value > 0) {
+      letterSpacingBtn.classList.add("active");
+    } else {
+      letterSpacingBtn.classList.remove("active");
+    }
+  });
 }
+letterSpacingBtn.addEventListener("click", () => {
+  const isActive = letterSpacingBtn.classList.toggle("active");
+
+  if (isActive) {
+    letterSpacingSlider.value = 2;
+    document.body.style.letterSpacing = "2px";
+    sessionStorage.setItem("letterSpacing", "2px");
+  } else {
+    letterSpacingSlider.value = 0;
+    document.body.style.letterSpacing = "0px";
+    sessionStorage.setItem("letterSpacing", "0px");
+  }
+});
+
+
 
 
 const fontSelect = document.getElementById("fontFamilySelect");

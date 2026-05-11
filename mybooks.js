@@ -4,7 +4,7 @@ const mode = params.get("mode");
 let planToRead = JSON.parse(sessionStorage.getItem("planToRead")) || [];
 let reading = JSON.parse(sessionStorage.getItem("reading")) || [];
 let finished = JSON.parse(sessionStorage.getItem("finishedBooks")) || [];
-// Load the correct list
+
 if (mode === "reading") {
   loadBooks(reading, "Reading List");
 } else if (mode === "plan") {

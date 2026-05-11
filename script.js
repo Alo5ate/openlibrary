@@ -70,7 +70,26 @@ document.addEventListener("DOMContentLoaded", () => {
         listContainer.style.display = "none";
         emptyMessage.style.display = "block";
     } else {
-        listContainer.style.display = "grid"; // or flex, whatever you use
+        listContainer.style.display = "grid";
         emptyMessage.style.display = "none";
     }
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const welcomePrompt = document.getElementById("welcomePrompt");
+  const welcomeConfirmBtn = document.getElementById("welcomeConfirmBtn");
+
+  if (!sessionStorage.getItem("welcomeShown")) {
+    welcomePrompt.style.display = "flex";
+  } else {
+    welcomePrompt.style.display = "none";
+  }
+
+  welcomeConfirmBtn.addEventListener("click", () => {
+    welcomePrompt.style.display = "none";
+    sessionStorage.setItem("welcomeShown", "true");
+  });
 });

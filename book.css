@@ -196,7 +196,7 @@ body.dyslexia-mode .book-details{
 
   .detail-btn:not(.disabled-btn):hover {
     cursor: pointer;
-    background-color: #555;
+    background-color: #4CAF50;;
   }
 
   .detail-btn:disabled{
@@ -339,4 +339,9 @@ body.dyslexia-mode .book-details{
 .read-review-btn:hover {
   opacity: 1;
 }
+}
+@media(max-width: 780px){
+  .book-details{
+    padding-bottom: 80px;
+  }
 }
